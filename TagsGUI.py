@@ -42,33 +42,37 @@ class MusicTagsApp:
             }
             self.add_default_categories()
             
-    def add_default_categories(self):
-        """Add the default categories if none exist."""
-        default_categories = {
-                "Genre": {
-                "tags": ["House", "Trap", "Dubstep", "Disco", "Drum and Bass"],
-                "rekordbox_field": "Genre",
-                "metadata_field": "GENRE"
-            },
-            "Components": {
-                "tags": ["Synth", "Piano", "Kick", "Hi Hat"],
-                "rekordbox_field": "Composer",
-                "metadata_field": "COMPOSER"
-            },
-            "Situation": {
-                "tags": ["Warm Up", "Building", "Peak Time", "After Hours", "Lounge", "House Party" ],
-                "rekordbox_field": "Label",
-                "metadata_field": "LABEL"
-            },
-            "Mood": {
-                "tags": ["Happy", "Melancholy", "Emotional", "Hype", "Angry"],
-                "rekordbox_field": "Comments",
-                "metadata_field": "COMMENT"
-            }
+def add_default_categories(self):
+    """Add the default categories if none exist."""
+    default_categories = {
+        "Genre": {
+            "tags": ["House", "Trap", "Dubstep", "Disco", "Drum and Bass"],
+            "rekordbox_field": "Genre",
+            "mp3_metadata_field": "GENRE",
+            "flac_metadata_field": "GENRE"
+        },
+        "Components": {
+            "tags": ["Synth", "Piano", "Kick", "Hi Hat"],
+            "rekordbox_field": "Composer",
+            "mp3_metadata_field": "COMPOSER",
+            "flac_metadata_field": "COMPOSER"
+        },
+        "Situation": {
+            "tags": ["Warm Up", "Building", "Peak Time", "After Hours", "Lounge", "House Party"],
+            "rekordbox_field": "Label",
+            "mp3_metadata_field": "LABEL",
+            "flac_metadata_field": "LABEL"
+        },
+        "Mood": {
+            "tags": ["Happy", "Melancholy", "Emotional", "Hype", "Angry"],
+            "rekordbox_field": "Comments",
+            "mp3_metadata_field": "COMMENT",
+            "flac_metadata_field": "COMMENT"
         }
-        
-        self.config["categories"] = default_categories
-        self.save_config()
+    }
+    
+    self.config["categories"] = default_categories
+    self.save_config()
 
     def save_config(self):
         """Save the current configuration to the JSON file."""
@@ -201,50 +205,59 @@ class MusicTagsApp:
 
         prefs_window.mainloop()
 
-    def create_category_tab(self, parent, category):
-        """Create the input fields for a specific category."""
-        category_info = self.config["categories"].get(category, {})
-        
-        # Category Name
-        tk.Label(parent, text="Category:").grid(row=0, column=0, sticky="w", padx=10, pady=5)
-        category_name_entry = tk.Entry(parent, width=30)
-        category_name_entry.insert(0, category)
-        category_name_entry.grid(row=0, column=1, padx=10, pady=5)
+def create_category_tab(self, parent, category):
+    """Create the input fields for a specific category."""
+    category_info = self.config["categories"].get(category, {})
 
-        # Tags
-        tk.Label(parent, text="Tags (comma separated):").grid(row=1, column=0, sticky="w", padx=10, pady=5)
-        tags_entry = tk.Entry(parent, width=30)
-        tags_entry.insert(0, ", ".join(category_info.get("tags", [])))
-        tags_entry.grid(row=1, column=1, padx=10, pady=5)
+    # Category Name
+    tk.Label(parent, text="Category:").grid(row=0, column=0, sticky="w", padx=10, pady=5)
+    category_name_entry = tk.Entry(parent, width=30)
+    category_name_entry.insert(0, category)
+    category_name_entry.grid(row=0, column=1, padx=10, pady=5)
 
-        # Rekordbox Field
-        tk.Label(parent, text="Rekordbox Field:").grid(row=2, column=0, sticky="w", padx=10, pady=5)
-        rekordbox_field_entry = tk.Entry(parent, width=30)
-        rekordbox_field_entry.insert(0, category_info.get("rekordbox_field", ""))
-        rekordbox_field_entry.grid(row=2, column=1, padx=10, pady=5)
+    # Tags
+    tk.Label(parent, text="Tags (comma separated):").grid(row=1, column=0, sticky="w", padx=10, pady=5)
+    tags_entry = tk.Entry(parent, width=30)
+    tags_entry.insert(0, ", ".join(category_info.get("tags", [])))
+    tags_entry.grid(row=1, column=1, padx=10, pady=5)
 
-        # Metadata Field
-        tk.Label(parent, text="Metadata Field:").grid(row=3, column=0, sticky="w", padx=10, pady=5)
-        metadata_field_entry = tk.Entry(parent, width=30)
-        metadata_field_entry.insert(0, category_info.get("metadata_field", ""))
-        metadata_field_entry.grid(row=3, column=1, padx=10, pady=5)
+    # Rekordbox Field (Dropdown)
+    rekordbox_field_options = ["Genre", "Composer", "Label", "Comments"]  # Predefined list for Rekordbox fields
+    tk.Label(parent, text="Rekordbox Field:").grid(row=2, column=0, sticky="w", padx=10, pady=5)
+    rekordbox_field_combobox = ttk.Combobox(parent, values=rekordbox_field_options, width=30)
+    rekordbox_field_combobox.set(category_info.get("rekordbox_field", ""))
+    rekordbox_field_combobox.grid(row=2, column=1, padx=10, pady=5)
 
-        # Save Button
-        def save_category():
-            # Save the new category data
-            self.config["categories"][category_name_entry.get()] = {
-                "tags": [tag.strip() for tag in tags_entry.get().split(",")],
-                "rekordbox_field": rekordbox_field_entry.get(),
-                "metadata_field": metadata_field_entry.get()
-            }
-            self.save_config()
+    # MP3 Metadata Field (Dropdown)
+    mp3_metadata_field_options = ["album", "bpm", "compilation", "composer", "copyright", "encodedby", "lyricist", "length", "media", "mood", "grouping", "title", "version", "artist", "albumartist", "conductor", "arranger", "discnumber", "organization", "tracknumber", "author", "albumartistsort", "albumsort", "composersort", "artistsort", "titlesort", "isrc", "discsubtitle", "language", "genre", "date", "originaldate", "performer", "website", "releasecountry", "asin", "barcode", "catalognumber"]  # Predefined list for MP3 fields
+    tk.Label(parent, text="MP3 Metadata Field:").grid(row=3, column=0, sticky="w", padx=10, pady=5)
+    mp3_metadata_field_combobox = ttk.Combobox(parent, values=mp3_metadata_field_options, width=30)
+    mp3_metadata_field_combobox.set(category_info.get("mp3_metadata_field", ""))
+    mp3_metadata_field_combobox.grid(row=3, column=1, padx=10, pady=5)
 
-            # Update the tab name
-            notebook.tab(notebook.index(tab), text=category_name_entry.get())
+    # FLAC Metadata Field (Dropdown)
+    flac_metadata_field_options = ["GENRE", "COMPOSER", "LABEL", "COMMENT"]  # Predefined list for FLAC fields
+    tk.Label(parent, text="FLAC Metadata Field:").grid(row=4, column=0, sticky="w", padx=10, pady=5)
+    flac_metadata_field_combobox = ttk.Combobox(parent, values=flac_metadata_field_options, width=30)
+    flac_metadata_field_combobox.set(category_info.get("flac_metadata_field", ""))
+    flac_metadata_field_combobox.grid(row=4, column=1, padx=10, pady=5)
 
-        save_button = tk.Button(parent, text="Save", command=save_category)
-        save_button.grid(row=4, column=0, columnspan=2, pady=10)
+    # Save Button
+    def save_category():
+        # Save the new category data
+        self.config["categories"][category_name_entry.get()] = {
+            "tags": [tag.strip() for tag in tags_entry.get().split(",")],
+            "rekordbox_field": rekordbox_field_combobox.get(),
+            "mp3_metadata_field": mp3_metadata_field_combobox.get(),
+            "flac_metadata_field": flac_metadata_field_combobox.get()
+        }
+        self.save_config()
 
+        # Update the tab name
+        notebook.tab(notebook.index(tab), text=category_name_entry.get())
+
+    save_button = tk.Button(parent, text="Save", command=save_category)
+    save_button.grid(row=5, column=0, columnspan=2, pady=10)
 
 
     def run_script(self):
