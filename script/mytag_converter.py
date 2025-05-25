@@ -83,8 +83,8 @@ def update_metadata_flac(flac_path, categorized_tags, categories, delimiter):
     
     # For each category, update the corresponding metadata field
     for category, category_info in categories.items():
-        metadata_field = category_info.get('metadata_field')
-        if metadata_field.upper() == 'PUBLISHER': metadata_field = 'LABEL'
+        metadata_field = category_info.get('flac_metadata_field').upper()
+        metadata_field = metadata_field.replace(" ", "")
         
         if metadata_field:
             # Get the tags for the category and join them into a single string
@@ -101,7 +101,7 @@ def update_metadata_mp3(mp3_path, categorized_tags, categories, delimiter):
     
     # For each category, update the corresponding metadata field
     for category, category_info in categories.items():
-        metadata_field = category_info.get('metadata_field')
+        metadata_field = category_info.get('mp3_metadata_field')
         
         if metadata_field:
             # Get the tags for the category and join them into a single string
