@@ -1,11 +1,17 @@
 {
+    "use_rekordbox_xml": false,
+    "rekordbox_db_path": "/path/to/exported/rekordbox.xml",
+    "music_directory": "/path/to/your/music/directory",
+    "mytag_db_file": "MyTags.xml",
+	"tag_delimiter": " / ",
     "categories": {
         "Genre": {
             "tags": [
                 "House",
                 "Trap",
                 "Dubstep",
-                "Disco. Drum and Bass"
+                "Disco",
+				"Drum and Bass"
             ],
             "rekordbox_field": "Genre",
             "metadata_field": "GENRE"
@@ -43,9 +49,5 @@
             "rekordbox_field": "Comments",
             "metadata_field": "COMMENT"
         }
-    },
-    "use_rekordbox_xml": false,
-    "rekordbox_db_path": "/path/to/exported/rekordbox.xml",
-    "music_directory": "/path/to/your/music/directory",
-    "mytag_db_file": "MyTags.xml"
+    }
 }
