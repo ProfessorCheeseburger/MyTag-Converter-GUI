@@ -229,14 +229,14 @@ def create_category_tab(self, parent, category):
     rekordbox_field_combobox.grid(row=2, column=1, padx=10, pady=5)
 
     # MP3 Metadata Field (Dropdown)
-    mp3_metadata_field_options = ["album", "bpm", "compilation", "composer", "copyright", "encodedby", "lyricist", "length", "media", "mood", "grouping", "title", "version", "artist", "albumartist", "conductor", "arranger", "discnumber", "organization", "tracknumber", "author", "albumartistsort", "albumsort", "composersort", "artistsort", "titlesort", "isrc", "discsubtitle", "language", "genre", "date", "originaldate", "performer", "website", "releasecountry", "asin", "barcode", "catalognumber"]  # Predefined list for MP3 fields
+    mp3_metadata_field_options = ["album", "bpm", "comments", "compilation", "composer", "copyright", "encodedby", "lyricist", "length", "media", "mood", "grouping", "title", "version", "artist", "publisher", "albumartist", "conductor", "arranger", "discnumber", "organization", "tracknumber", "author", "albumartistsort", "albumsort", "composersort", "artistsort", "titlesort", "isrc", "discsubtitle", "language", "genre", "date", "originaldate", "performer", "website", "releasecountry", "asin", "barcode", "catalognumber"]  # Predefined list for MP3 fields
     tk.Label(parent, text="MP3 Metadata Field:").grid(row=3, column=0, sticky="w", padx=10, pady=5)
     mp3_metadata_field_combobox = ttk.Combobox(parent, values=mp3_metadata_field_options, width=30)
     mp3_metadata_field_combobox.set(category_info.get("mp3_metadata_field", ""))
     mp3_metadata_field_combobox.grid(row=3, column=1, padx=10, pady=5)
 
     # FLAC Metadata Field (Dropdown)
-    flac_metadata_field_options = ["ARTIST", "ALBUM", "ALBUMARTIST", "GENRE", "COMPOSER", "LABEL", "COMMENT", "BAND", "MIXARTIST"]  # Predefined list for FLAC fields
+    flac_metadata_field_options = ["Artist", "Album", "Album Artist", "Genre", "Composer", "Label", "Comment", "Band", "Mix Artist", "Lyricist", "Author", "Conductor", "Copyright", "License"]  # Predefined list for FLAC fields
     tk.Label(parent, text="FLAC Metadata Field:").grid(row=4, column=0, sticky="w", padx=10, pady=5)
     flac_metadata_field_combobox = ttk.Combobox(parent, values=flac_metadata_field_options, width=30)
     flac_metadata_field_combobox.set(category_info.get("flac_metadata_field", ""))
@@ -248,7 +248,7 @@ def create_category_tab(self, parent, category):
         self.config["categories"][category_name_entry.get()] = {
             "tags": [tag.strip() for tag in tags_entry.get().split(",")],
             "rekordbox_field": rekordbox_field_combobox.get(),
-            "mp3_metadata_field": mp3_metadata_field_combobox.get(),
+            "mp3_metadata_field": mp3_metadata_field,
             "flac_metadata_field": flac_metadata_field_combobox.get()
         }
         self.save_config()
